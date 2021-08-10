@@ -148,5 +148,8 @@ cython_debug/
 # .ini
 *.ini
 
+# ready images
+tg_bot/assets/images/ready/*.png
+
 # End of https://www.toptal.com/developers/gitignore/api/python
 
