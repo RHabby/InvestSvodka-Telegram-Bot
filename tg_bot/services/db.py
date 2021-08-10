@@ -27,6 +27,39 @@ class Repo:
         ]
         return users
 
+    async def mark_user_as_inactive(self, tg_id: int) -> None:
+        """Меняет статус активности пользователя"""
+        await self.conn.execute(
+            """
+            UPDATE users
+            SET is_active = FALSE
+            WHERE tg_id = $1;
+            """,
+            tg_id
+        )
+
+    async def get_subscribers(self, service_name: str) -> List[int]:
+        """Получение всех подписчиков
+
+        Список tg_id активных пользователей бота,
+        у которых есть подписка(и)
+        """
+        users = [
+            row[0]
+            for row in await self.conn.fetch(
+                """
+                SELECT u.tg_id FROM users u
+                JOIN subscriptions subs
+                ON u.id = subs.user_id
+                JOIN services s
+                ON subs.service_id = s.id
+                WHERE service_name = $1 AND u.is_active = true;
+                """,
+                service_name
+            )
+        ]
+        return users
+
     async def get_user_subscriptions(self, tg_id: int) -> List[asyncpg.Record]:
         """Подписки пользователя"""
         subscriptions = [
@@ -121,3 +154,14 @@ class Repo:
             command
         )
         return
+
+    async def get_service_names(self) -> List[str]:
+        """Получает имена всех доступных сервисов"""
+        names = [
+            row[0]
+            for row in await self.conn.fetch(
+                "SELECT service_name FROM services;"
+            )
+        ]
+
+        return names
