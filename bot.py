@@ -4,6 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.types import ParseMode
 import asyncpg
 from tg_bot.config import load_config
 from tg_bot.handlers import user
@@ -48,7 +49,7 @@ async def main() -> None:
         host=config.db.host,
     )
 
-    bot = Bot(token=config.tg_bot.token)
+    bot = Bot(token=config.tg_bot.token, parse_mode=ParseMode.HTML)
     dp = Dispatcher(bot=bot, storage=storage)
 
     dp.middleware.setup(DbMiddleware(pool))
