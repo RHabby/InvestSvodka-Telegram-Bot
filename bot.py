@@ -7,9 +7,12 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.types import ParseMode
 import asyncpg
 from tg_bot.config import load_config
-from tg_bot.handlers import user
+from tg_bot.filters.role import RoleFilter
+from tg_bot.handlers import admin, user
 from tg_bot.middlewares.db import DbMiddleware
+from tg_bot.middlewares.role import RoleMiddleware
 from tg_bot.utils.set_basic_commands import set_basic_commands
+
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +56,10 @@ async def main() -> None:
     dp = Dispatcher(bot=bot, storage=storage)
 
     dp.middleware.setup(DbMiddleware(pool))
+    dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_id))
+    dp.filters_factory.bind(RoleFilter)
 
+    admin.register_admin(dp)
     user.register_user(dp)
     await set_basic_commands(dp)
 
