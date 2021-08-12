@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 async def create_pool(user: str, password: str, database: str, host: str) -> asyncpg.Pool:
-    """create pool."""
+    """Create pool."""
     pool = await asyncpg.create_pool(
         user=user,
         password=password,
@@ -26,9 +26,9 @@ async def create_pool(user: str, password: str, database: str, host: str) -> asy
 
 
 async def main() -> None:
-    """main bot function
+    """Main bot function.
 
-    configure and start long polling
+    Configure and start long polling
     """
     logging.basicConfig(
         level=logging.INFO,

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass
 class TgBot:
-    """tgbot credentials"""
+    """Tgbot credentials."""
 
     token: str
     admin_id: int
@@ -13,7 +13,7 @@ class TgBot:
 
 @dataclass
 class DbConfig:
-    """database credentials"""
+    """Database credentials."""
 
     user: str
     password: str
@@ -23,21 +23,21 @@ class DbConfig:
 
 @dataclass
 class Config:
-    """main config class"""
+    """Main config class."""
 
     tg_bot: TgBot
     db: DbConfig
 
 
 def cast_bool(value: str) -> bool:
-    """cast boolean value"""
+    """Cast boolean value."""
     if not value:
         return False
     return value.lower() in ("true", "t", "1", "yes")
 
 
 def load_config(path: str) -> Config:
-    """read and load config function"""
+    """Read and load config function."""
     config = configparser.ConfigParser()
     config.read(path)
 
