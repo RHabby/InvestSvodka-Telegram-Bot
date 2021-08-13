@@ -91,7 +91,7 @@ async def get_all_images(msg: Message, repo: Repo) -> None:
     cmd = msg.text.split(" ")[0].lstrip("/")
     await repo.increase_interactions_counter(command=cmd)
 
-    images = get_list("all_base_templates")
+    images = get_list("all_base_template")
     media = _collect_media_group(images)
     await msg.answer_media_group(media=media)
 
