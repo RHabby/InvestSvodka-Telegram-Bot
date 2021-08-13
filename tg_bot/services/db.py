@@ -20,12 +20,25 @@ class Repo:
     async def users_list(self) -> List[asyncpg.Record]:
         """Возвращает список всех пользователей бота"""
         users = [
-            row[0]
+            row
             for row in await self.conn.fetch(
-                "SELECT id FROM users",
+                "SELECT * FROM users",
             )
         ]
         return users
+
+    async def admins_list(self) -> List[int]:
+        """Возвращает список всех админов бота"""
+        admins = [
+            row[0]
+            for row in await self.conn.fetch(
+                """
+                SELECT tg_id FROM users
+                WHERE role = 'admin';
+                """,
+            )
+        ]
+        return admins
 
     async def mark_user_as_inactive(self, tg_id: int) -> None:
         """Меняет статус активности пользователя"""
@@ -37,6 +50,19 @@ class Repo:
             """,
             tg_id
         )
+
+    async def change_user_role(self, username: str, role: str) -> None:
+        """Изменяет роль пользователя."""
+        update = await self.conn.execute(
+            """
+            UPDATE users
+            SET role = $2
+            WHERE username = $1;
+            """,
+            username, role,
+        )
+
+        return update
 
     async def get_subscribers(self, service_name: str) -> List[int]:
         """Получение всех подписчиков
@@ -165,3 +191,33 @@ class Repo:
         ]
 
         return names
+
+    async def get_interactions_stats(self):
+        """Статистика использования команд."""
+        stats = [
+            row
+            for row in await self.conn.fetch(
+                """SELECT * FROM interactions_count""",
+            )
+        ]
+        return stats
+
+    async def get_services_stats(self):
+        """Статистика по каждому сервису
+
+        Название сервиса — количество подписчиков
+        """
+        stats = [
+            row
+            for row in await self.conn.fetch(
+                """
+                SELECT s.service_name as service_name, COUNT(subs.user_id) as subscribers
+                FROM services s
+                JOIN subscriptions subs
+                ON s.id = subs.service_id
+                GROUP BY service_name
+                ORDER BY subscribers DESC
+                """,
+            )
+        ]
+        return stats
