@@ -1,7 +1,6 @@
 from functools import wraps
 from typing import List, Optional, Union
 
-from aiogram import Bot
 from aiogram.types import InputFile
 from aiogram.utils.exceptions import BotBlocked
 from tg_bot.config import load_config
@@ -9,6 +8,7 @@ from tg_bot.services.db import Repo
 from tg_bot.services.redis_service import get_list, get_value
 from tg_bot.tasks.utils.db import get_db
 from tg_bot.utils.handler_helpers import _collect_media_group
+from tg_bot.utils.misc import get_bot
 
 
 def init_db(func):
@@ -22,11 +22,6 @@ def init_db(func):
             return await func(repo=repo, *args, **kwargs)
 
     return wrapper
-
-
-def get_bot() -> Bot:
-    config = load_config("bot.ini")
-    return Bot(token=config.tg_bot.token)
 
 
 async def _send_to_subscribers(service_name: str, repo: Repo) -> None:
