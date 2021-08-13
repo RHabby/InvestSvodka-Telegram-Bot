@@ -1,3 +1,4 @@
+# user text templates
 START_MESSAGE = (
     "Привет, {}! \n\n"
     "Я — бот, информирующий тебя о котировках на различных рынках. "
@@ -75,3 +76,51 @@ ALREADY_SUBSCRIBED_MESSAGE = "Похоже, что ты подписан на в
 
 UNSUBSCRIBE_MESSAGE = "Чтобы отписаться нажми на кнопку с названием подборки.\n\nТвои подписки:"
 ALREDY_UNSUBSCRIBED_MESSAGE = "Похоже, подписки кончились."
+
+# admin text templates
+MAIN_ADMIN_MESSAGE = (
+    "Доступные команды:\n"
+    "/admin — выводит это сообщение;\n"
+    "/make_admin — изменяет роль пользователя на admin."
+    "Формат использования: <code>/make_admin username</code>\n"
+    "/make_user — изменяет роль пользователя на user."
+    "Формат использования: <code>/make_user username</code>\n"
+    "/mailing — команда для рассылки всем пользователям бота. "
+    "Формат использования: <code>/mailing //перенос на новую строку// "
+    "Сообщение для рассылки</code>.\n\n"
+    "Статистика:"
+)
+
+NO_USERNAME_MESSAGE = "Похоже, что username не передан."
+
+NO_USERNAME_IN_DB_MESSAGE = "Похоже, что такого юзера нет в базе."
+
+ROLE_CHANGED_MESSAGE = "Роль пользователя '{username}' изменена на '{role}'"
+
+NO_TEXT_MESSAGE = "Похоже, нет текста для рассылки."
+
+CMD_STATS_MESSAGE = "Статистика использования команд бота:\n"
+ADD_TO_CMD_STATS = " • <code>{command}</code> — <strong>{cnt}</strong>;\n"
+
+USERS_STATS_MESSAGE = (
+    "Пользователи бота: <code>{users_cnt}</code> (показаны первые 50)\n"
+    "Активных пользователей (<b>незаблокировавших бота</b>): "
+    "<code>{active_users} ({active_users_percent}%)</code>\n\n"
+    "<b>Username</b> : <b>Telegram ID</b> : <b>is_active</b>\n"
+
+)
+ADD_TO_USERS_STATS = (
+    " • <i>@{username}</i> : "
+    "<code>{tg_id}</code> : "
+    "<b>{is_active}</b>\n"
+)
+
+SERVICES_STATS_MESSAGE = (
+    "Статистика сервисов:\n"
+    "<b>Service</b> — <b>Subscribers</b>\n"
+)
+
+ADD_TO_SERVICEC_STATS = (
+    " • <code>{service_name}</code> — "
+    "<b><i>{subscribers}</i></b>\n"
+)
